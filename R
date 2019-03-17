@@ -1,0 +1,28 @@
+data <- read.csv(file.choose())
+str(data)
+library(fpp)
+time_ser <- ts(data, frequency = 4, start = c(1900,1))
+str(time_ser)
+head(time_ser)
+attributes(time_ser)
+plot(time_ser[,2:11], type = 's')
+
+#Data Prep.
+n <- 10
+s <- sample(1:4, n)
+
+pattern4 <- c(rep('Normal', 4),
+              rep('Cyclic', 4),
+              rep('Increasing Trend', 4),
+              rep('Decreasing Trend', 4),
+              rep('Upward shift', 4),
+              rep('Downward shift', 4))
+
+library(dtw)
+distance <- dist(time_ser, method = "DTW")
+dist(time_ser, method = "DTW")
+
+#Hier. Clustering
+hc <- hclust(distance, method = 'average')
+plot(hc, labels = pattern4, cex = 0.7, hang = -1, col ='blue')
+rect.hclust(hc, k = 4)
